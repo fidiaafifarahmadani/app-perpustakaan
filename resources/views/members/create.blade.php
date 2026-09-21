@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Anggota</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Tambah Anggota')
+
+@section('content')
 
     <h1>Tambah Anggota</h1>
 
@@ -14,30 +11,24 @@
 
         <div>
             <label for="nama">Nama</label>
-            <input type="text" name="nama" id="nama" value="{{ old('nama') }}">
-            @error('nama')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
+            <input type="text" name="nama" id="nama"
+                   value="{{ old('nama') }}">
         </div>
 
         <br>
 
         <div>
             <label for="nim">NIM</label>
-            <input type="text" name="nim" id="nim" value="{{ old('nim') }}">
-            @error('nim')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
+            <input type="text" name="nim" id="nim"
+                   value="{{ old('nim') }}">
         </div>
 
         <br>
 
         <div>
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" value="{{ old('email') }}">
-            @error('email')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
+            <input type="email" name="email" id="email"
+                   value="{{ old('email') }}">
         </div>
 
         <br>
@@ -46,9 +37,6 @@
             <label for="nomor_telepon">Nomor Telepon</label>
             <input type="text" name="nomor_telepon" id="nomor_telepon"
                    value="{{ old('nomor_telepon') }}">
-            @error('nomor_telepon')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
         </div>
 
         <br>
@@ -56,9 +44,6 @@
         <div>
             <label for="alamat">Alamat</label>
             <textarea name="alamat" id="alamat">{{ old('alamat') }}</textarea>
-            @error('alamat')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
         </div>
 
         <br>
@@ -70,10 +55,6 @@
                 <option value="aktif">Aktif</option>
                 <option value="nonaktif">Nonaktif</option>
             </select>
-
-            @error('status')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
         </div>
 
         <br>
@@ -83,5 +64,4 @@
 
     </form>
 
-</body>
-</html>
+@endsection

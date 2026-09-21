@@ -1,25 +1,15 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Anggota</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Daftar Anggota</h1>
+@section('title', 'Daftar Anggota')
 
-    @if(session('success'))
-        <div style="color: green;">
-            {{ session('success') }}
-        </div>
-    @endif
+@section('content')
 
-    <p>
+    <div class="page-header">
+        <h1>Daftar Anggota</h1>
         <a href="{{ route('members.create') }}">+ Tambah Anggota</a>
-    </p>
+    </div>
 
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -51,5 +41,4 @@
         </tbody>
     </table>
 
-</body>
-</html>
+@endsection

@@ -4,99 +4,106 @@
 
 @section('content')
 
-    <h1>Tambah Buku</h1>
-
-    <p>
-        <a href="{{ route('books.index') }}">← Kembali ke daftar</a>
-    </p>
+    <div class="page-header">
+        <h1>Tambah Buku</h1>
+        <a href="{{ route('books.index') }}">Kembali</a>
+    </div>
 
     <form action="{{ route('books.store') }}" method="POST">
         @csrf
 
         <div>
-            <label for="judul">Judul Buku</label>
-            <input
-                type="text"
-                name="judul"
-                id="judul"
-                value="{{ old('judul') }}"
-            >
+            <label for="judul">Judul</label>
+            <input type="text"
+                   name="judul"
+                   id="judul"
+                   value="{{ old('judul') }}">
 
             @error('judul')
-                <div style="color: red;">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
-
-        <br>
 
         <div>
             <label for="penulis">Penulis</label>
-            <input
-                type="text"
-                name="penulis"
-                id="penulis"
-                value="{{ old('penulis') }}"
-            >
+            <input type="text"
+                   name="penulis"
+                   id="penulis"
+                   value="{{ old('penulis') }}">
 
             @error('penulis')
-                <div style="color: red;">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
-
-        <br>
 
         <div>
             <label for="penerbit">Penerbit</label>
-            <input
-                type="text"
-                name="penerbit"
-                id="penerbit"
-                value="{{ old('penerbit') }}"
-            >
+            <input type="text"
+                   name="penerbit"
+                   id="penerbit"
+                   value="{{ old('penerbit') }}">
 
             @error('penerbit')
-                <div style="color: red;">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
-
-        <br>
 
         <div>
             <label for="tahun_terbit">Tahun Terbit</label>
-            <input
-                type="number"
-                name="tahun_terbit"
-                id="tahun_terbit"
-                value="{{ old('tahun_terbit') }}"
-            >
+            <input type="number"
+                   name="tahun_terbit"
+                   id="tahun_terbit"
+                   value="{{ old('tahun_terbit') }}">
 
             @error('tahun_terbit')
-                <div style="color: red;">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
 
-        <br>
+        <div>
+            <label for="isbn">ISBN</label>
+            <input type="text"
+                   name="isbn"
+                   id="isbn"
+                   value="{{ old('isbn') }}">
+
+            @error('isbn')
+                <div class="error">{{ $message }}</div>
+            @enderror
+        </div>
 
         <div>
             <label for="stok">Stok</label>
-            <input
-                type="number"
-                name="stok"
-                id="stok"
-                value="{{ old('stok') }}"
-            >
+            <input type="number"
+                   name="stok"
+                   id="stok"
+                   value="{{ old('stok') }}">
 
             @error('stok')
-                <div style="color: red;">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
 
-        <br>
+        <div>
+    <label for="category_id">Kategori</label>
 
-        <button type="submit">Simpan</button>
+    <select name="category_id" id="category_id">
+        <option value="">-- Pilih Kategori --</option>
 
-        <a href="{{ route('books.index') }}">Batal</a>
+        @foreach ($categories as $category)
+            <option value="{{ $category['id'] }}"
+                {{ old('category_id') == $category['id'] ? 'selected' : '' }}>
+                {{ $category['nama_kategori'] }}
+            </option>
+        @endforeach
+    </select>
 
+    @error('category_id')
+        <div class="error">{{ $message }}</div>
+    @enderror
+</div>
+
+        <button type="submit" class="btn">Simpan</button>
     </form>
 
 @endsection

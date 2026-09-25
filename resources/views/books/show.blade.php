@@ -12,32 +12,37 @@
     <div>
         <p>
             <strong>ID:</strong>
-            {{ $book['id'] ?? $id }}
+            {{ $book['id'] }}
         </p>
 
         <p>
             <strong>Judul:</strong>
-            {{ $book['judul'] ?? '-' }}
+            {{ $book['judul'] }}
         </p>
 
         <p>
             <strong>Penulis:</strong>
-            {{ $book['penulis'] ?? '-' }}
+            {{ $book['penulis'] }}
         </p>
 
         <p>
             <strong>Penerbit:</strong>
-            {{ $book['penerbit'] ?? '-' }}
+            {{ $book['penerbit'] }}
         </p>
 
         <p>
             <strong>Tahun Terbit:</strong>
-            {{ $book['tahun_terbit'] ?? '-' }}
+            {{ $book['tahun_terbit'] }}
         </p>
 
         <p>
             <strong>Stok:</strong>
-            {{ $book['stok'] ?? '-' }}
+            {{ $book['stok'] }}
+        </p>
+
+        <p>
+            <strong>ID Kategori:</strong>
+            {{ $book['category_id'] }}
         </p>
     </div>
 

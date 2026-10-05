@@ -18,6 +18,28 @@
         .btn { display: inline-block; padding: 6px 14px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
         form.inline { display: inline; }
         footer { text-align: center; padding: 20px; color: #6b7280; font-size: 14px; border-top: 1px solid #e5e7eb; margin-top: 40px; }
+        .status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status-dipinjam {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-dikembalikan {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-terlambat {
+    background: #fee2e2;
+    color: #991b1b;
+}
     </style>
 </head>
 <body>

@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Loan;
 
 class User extends Authenticatable
 {
@@ -24,6 +25,10 @@ class User extends Authenticatable
     'password',
     'role',
 ];
+public function loanItems()
+{
+    return $this->hasMany(LoanItem::class);
+}
 
     /**
      * The attributes that should be hidden for serialization.

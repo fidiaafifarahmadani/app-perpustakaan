@@ -3,86 +3,73 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMemberRequest;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the members.
-     */
     public function index()
     {
-        $members = [
-            [
-                'id' => 1,
-                'nama' => 'Andi',
-                'nim' => '23001',
-                'email' => 'andi@gmail.com',
-                'nomor_telepon' => '081234567890',
-                'alamat' => 'Surabaya',
-                'status' => 'aktif',
-            ],
-            [
-                'id' => 2,
-                'nama' => 'Budi',
-                'nim' => '23002',
-                'email' => 'budi@gmail.com',
-                'nomor_telepon' => '081234567891',
-                'alamat' => 'Sidoarjo',
-                'status' => 'aktif',
-            ],
-        ];
+        $members = Member::paginate(10);
 
         return view('members.index', compact('members'));
     }
 
-    /**
-     * Show the form for creating a new member.
-     */
     public function create()
     {
         return view('members.create');
     }
+    public function show(string $id)
+{
+    $member = Member::with([
+        'loans.user',
+        'loans.loanItems.book',
+    ])->findOrFail($id);
 
-    /**
-     * Store a newly created member.
-     */
+    return view('members.show', compact('member'));
+}
     public function store(StoreMemberRequest $request)
     {
-        return redirect()
-            ->route('members.index')
-            ->with('success', 'Anggota berhasil ditambahkan.');
+        $validated = $request->validated();
+
+        Member::create($validated);
+
+        return redirect()->route('members.index')
+            ->with('success', "Anggota \"{$validated['nama']}\" berhasil ditambahkan.");
     }
 
-    /**
-     * Display the specified member.
-     */
-    public function show(string $id)
-    {
-        return 'MemberController@show, id: ' . $id;
-    }
-
-    /**
-     * Show the form for editing the specified member.
-     */
     public function edit(string $id)
     {
-        return 'MemberController@edit, id: ' . $id;
+        $member = Member::findOrFail($id);
+
+        return view('members.edit', compact('member'));
     }
 
-    /**
-     * Update the specified member.
-     */
     public function update(Request $request, string $id)
     {
-        return 'MemberController@update, id: ' . $id;
+        $member = Member::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:100',
+            'nim' => 'required|string|max:20|unique:members,nim,' . $member->id,
+            'email' => 'required|email|max:100|unique:members,email,' . $member->id,
+            'nomor_telepon' => 'required|string|max:15',
+            'alamat' => 'required|string',
+            'status' => 'required|in:aktif,nonaktif',
+        ]);
+
+        $member->update($validated);
+
+        return redirect()->route('members.index')
+            ->with('success', "Anggota \"{$validated['nama']}\" berhasil diperbarui.");
     }
 
-    /**
-     * Remove the specified member.
-     */
     public function destroy(string $id)
     {
-        return 'MemberController@destroy, id: ' . $id;
+        $member = Member::findOrFail($id);
+        $member->delete();
+
+        return redirect()->route('members.index')
+            ->with('success', 'Anggota berhasil dihapus.');
     }
 }

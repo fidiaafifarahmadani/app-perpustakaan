@@ -41,8 +41,8 @@
         </p>
 
         <p>
-            <strong>ID Kategori:</strong>
-            {{ $book['category_id'] }}
+            <strong>Kategori:</strong>
+            {{ $book->category->nama_kategori }}
         </p>
     </div>
 

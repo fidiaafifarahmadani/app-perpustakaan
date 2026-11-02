@@ -68,5 +68,3 @@
             @endforelse
         </tbody>
     </table>
-
-    {{ $books->links() }}

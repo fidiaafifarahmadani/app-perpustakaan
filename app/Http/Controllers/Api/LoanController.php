@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LoanResource;
 use App\Models\Loan;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 class LoanController extends Controller
@@ -20,6 +22,30 @@ class LoanController extends Controller
 
         return LoanResource::collection($loans);
     }
+    public function report(Request $request)
+{
+    $body = ['data' => [], 'meta' => null];
+
+    try {
+        $response = Http::get(
+            config('services.internal_api.base_url') . '/api/loans',
+            [
+                'page' => $request->query('page', 1),
+            ]
+        );
+
+        if ($response->successful()) {
+            $body = $response->json();
+        }
+    } catch (ConnectionException $e) {
+        // Server API internal tidak bisa dihubungi.
+    }
+
+    return view('loans.report', [
+        'loans' => $body['data'] ?? [],
+        'meta' => $body['meta'] ?? null,
+    ]);
+}
 
     // Menambahkan peminjaman
     public function store(Request $request)

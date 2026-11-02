@@ -4,6 +4,36 @@
     <meta charset="UTF-8">
     <title>@yield('title', 'Perpustakaan Digital Kampus')</title>
     <style>
+        .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.pagination a {
+    color: #333;
+}
+
+.pagination .active {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+.pagination .disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
         * { box-sizing: border-box; }
         body { font-family: sans-serif; margin: 0; color: #1f2937; }
         nav { background: #1e3a8a; padding: 14px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; }
@@ -42,6 +72,34 @@
 .status-terlambat {
     background: #fee2e2;
     color: #991b1b;
+}
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 160px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-card .value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1e3a8a;
+}
+
+.stat-card .label {
+    margin-top: 6px;
+    color: #6b7280;
+    font-size: 14px;
 }
     </style>
 </head>

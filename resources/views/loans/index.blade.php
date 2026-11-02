@@ -69,5 +69,4 @@
         </tbody>
     </table>
 
-    {{ $loans->links() }}
-@endsection
+    @endsection

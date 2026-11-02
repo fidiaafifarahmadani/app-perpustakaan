@@ -120,3 +120,4 @@
     </form>
 
 @endsection
+<p><em>Petugas pencatat: {{ auth()->user()->name }} (otomatis dari akun yang login).</em></p>

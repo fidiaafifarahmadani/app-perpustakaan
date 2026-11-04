@@ -25,11 +25,13 @@
                 <tr>
                     <td>{{ $loan['id'] }}</td>
                     <td>{{ $loan['member']['nama'] }}</td>
-                    <td>{{ $loan['user']['name'] }}</td>
+                    <td>{{ $loan['user']['name'] ?? '-' }}</td>
                     <td>
-                        @foreach ($loan['loanItems'] as $item)
-                            {{ $item['book']['judul'] }}@if (!$loop->last), @endif
-                        @endforeach
+                        @forelse (($loan['loanItems'] ?? []) as $item)
+                        {{ $item['book']['judul'] ?? '-' }}@if (!$loop->last), @endif
+                        @empty
+                        -
+                        @endforelse
                     </td>
                     <td>{{ $loan['tanggal_pinjam'] }}</td>
                     <td>{{ $loan['tanggal_kembali'] }}</td>
@@ -47,7 +49,7 @@
     |
     <form class="inline" action="{{ route('loans.kembalikan', $loan['id']) }}" method="POST">
         @csrf
-        @method('PATCH')
+        @method('PUT')
         <button type="submit">Kembalikan</button>
     </form>
 @endif

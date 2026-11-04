@@ -24,7 +24,7 @@
         </div>
     @endif
 
-    <form action="{{ route('loans.update', $loan->id) }}" method="POST">
+    <form action="{{ route('loans.update', $loan['id']) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -36,7 +36,7 @@
 
                 @foreach ($members as $member)
                     <option value="{{ $member->id }}"
-                        @selected(old('member_id', $loan->member_id) == $member->id)>
+                        @selected(old('member_id', $loan['member']['id'] ?? '') == $member->id)>
                         {{ $member->nama }} - {{ $member->nim }}
                     </option>
                 @endforeach
@@ -53,7 +53,7 @@
 
                 @foreach ($users as $user)
                     <option value="{{ $user->id }}"
-                        @selected(old('user_id', $loan->user_id) == $user->id)>
+                        @selected(old('user_id', $loan['petugas']['id'] ?? '') == $user->id)>
                         {{ $user->name }}
                     </option>
                 @endforeach
@@ -69,7 +69,7 @@
                 type="date"
                 name="tanggal_pinjam"
                 id="tanggal_pinjam"
-                value="{{ old('tanggal_pinjam', $loan->tanggal_pinjam) }}"
+                value="{{ old('tanggal_pinjam', $loan['tanggal_pinjam'] ?? '') }}"
                 required
             >
         </div>
@@ -83,7 +83,7 @@
                 type="date"
                 name="tanggal_kembali"
                 id="tanggal_kembali"
-                value="{{ old('tanggal_kembali', $loan->tanggal_kembali) }}"
+                value="{{ old('tanggal_kembali', $loan['tanggal_kembali'] ?? '') }}"
                 required
             >
         </div>
@@ -100,7 +100,7 @@
                             type="checkbox"
                             name="book_ids[]"
                             value="{{ $book->id }}"
-                            @checked(in_array($book->id, old('book_ids', $selectedBooks)))
+                            @checked(in_array($book->id, old('book_ids', $selectedBooks ?? [])))
                         >
 
                         {{ $book->judul }}

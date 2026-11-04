@@ -3,7 +3,17 @@
 @section('title', 'Daftar Buku')
 
 @section('content')
+@if (session('success'))
+    <div style="color: green; margin-bottom: 15px;">
+        {{ session('success') }}
+    </div>
+@endif
 
+@if (session('error'))
+    <div style="color: red; margin-bottom: 15px;">
+        {{ session('error') }}
+    </div>
+@endif
     <h1>Daftar Buku</h1>
 
     <p>

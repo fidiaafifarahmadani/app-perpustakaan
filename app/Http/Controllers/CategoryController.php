@@ -59,13 +59,19 @@ class CategoryController extends Controller
             ->with('success', "Kategori \"{$validated['nama_kategori']}\" berhasil diperbarui.");
     }
 
-    public function destroy(string $id)
-    {
-        $category = Category::findOrFail($id);
+   public function destroy(string $id)
+{
+    $category = Category::findOrFail($id);
 
-        $category->delete();
-
+    // Cek apakah kategori masih digunakan oleh buku
+    if ($category->books()->exists()) {
         return redirect()->route('categories.index')
-            ->with('success', 'Kategori berhasil dihapus.');
+            ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh buku.');
     }
+
+    $category->delete();
+
+    return redirect()->route('categories.index')
+        ->with('success', 'Kategori berhasil dihapus.');
+}
 }

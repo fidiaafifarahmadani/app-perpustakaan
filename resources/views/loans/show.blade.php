@@ -1,35 +1,34 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail Peminjaman</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; max-width: 600px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-        .info th { width: 160px; background: #f3f4f6; }
-    </style>
-</head>
-<body>
-    <h1>Detail Peminjaman</h1>
-    <p><a href="{{ route('loans.index') }}">&larr; Kembali ke daftar peminjaman</a></p>
+@extends('layouts.app')
 
-    <table class="info">
+@section('title', 'Detail Peminjaman')
+
+@section('content')
+    <h1>Detail Peminjaman</h1>
+
+    <p>
+        <a href="{{ route('loans.index') }}" class="btn">
+            &larr; Kembali ke daftar peminjaman
+        </a>
+    </p>
+
+    <table>
         <tr>
             <th>Anggota</th>
-            <td>{{ $loan['member']['nama'] }} ({{ $loan['member']['nim'] }})</td>
+            <td>{{ $loan['member']['nama'] ?? '-' }}
+                ({{ $loan['member']['nim'] ?? '-' }})
+            </td>
         </tr>
         <tr>
             <th>Petugas</th>
-            <td>{{ $loan['user']['name'] }}</td>
+            <td>{{ $loan['user']['name'] ?? '-' }}</td>
         </tr>
         <tr>
             <th>Tanggal Pinjam</th>
-            <td>{{ $loan['tanggal_pinjam'] }}</td>
+            <td>{{ $loan['tanggal_pinjam'] ?? '-' }}</td>
         </tr>
         <tr>
             <th>Tanggal Kembali</th>
-            <td>{{ $loan['tanggal_kembali'] }}</td>
+            <td>{{ $loan['tanggal_kembali'] ?? '-' }}</td>
         </tr>
         <tr>
             <th>Tanggal Dikembalikan</th>
@@ -37,11 +36,12 @@
         </tr>
         <tr>
             <th>Status</th>
-            <td>{{ ucfirst($loan['status']) }}</td>
+            <td>{{ ucfirst($loan['status'] ?? '-') }}</td>
         </tr>
     </table>
 
     <h2>Buku yang Dipinjam</h2>
+
     <table>
         <thead>
             <tr>
@@ -50,13 +50,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($loan['loanItems'] as $item)
+            @forelse (($loan['loanItems'] ?? []) as $item)
                 <tr>
-                    <td>{{ $item['book']['judul'] }}</td>
-                    <td>{{ $item['book']['penulis'] }}</td>
+                    <td>{{ $item['book']['judul'] ?? '-' }}</td>
+                    <td>{{ $item['book']['penulis'] ?? '-' }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="2">Tidak ada buku.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
-</body>
-</html>
+@endsection

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LoanResource;
 use App\Models\Loan;
@@ -22,6 +22,17 @@ class LoanController extends Controller
 
         return LoanResource::collection($loans);
     }
+    // Menampilkan detail satu peminjaman
+public function show(string $id)
+{
+    $loan = Loan::with([
+        'member',
+        'user',
+        'loanItems.book'
+    ])->findOrFail($id);
+
+    return new LoanResource($loan);
+}
     public function report(Request $request)
 {
     $body = ['data' => [], 'meta' => null];
@@ -83,7 +94,47 @@ class LoanController extends Controller
             ->response()
             ->setStatusCode(201);
     }
+// Memperbarui data peminjaman
+public function update(Request $request, string $id)
+{
+    $validated = $request->validate([
+        'member_id' => 'required|integer|exists:members,id',
+        'user_id' => 'required|integer|exists:users,id',
+        'tanggal_pinjam' => 'required|date',
+        'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+        'book_ids' => 'required|array|min:1',
+        'book_ids.*' => 'required|integer|exists:books,id',
+    ]);
 
+    $loan = Loan::findOrFail($id);
+
+    DB::transaction(function () use ($loan, $validated) {
+        $loan->update([
+            'member_id' => $validated['member_id'],
+            'user_id' => $validated['user_id'],
+            'tanggal_pinjam' => $validated['tanggal_pinjam'],
+            'tanggal_kembali' => $validated['tanggal_kembali'],
+        ]);
+
+        // Menghapus daftar buku lama
+        $loan->loanItems()->delete();
+
+        // Menambahkan daftar buku yang baru
+        foreach ($validated['book_ids'] as $bookId) {
+            $loan->loanItems()->create([
+                'book_id' => $bookId,
+            ]);
+        }
+    });
+
+    return new LoanResource(
+        $loan->fresh()->load([
+            'member',
+            'user',
+            'loanItems.book'
+        ])
+    );
+}
     // Memproses pengembalian buku
     public function kembalikan(string $id)
     {

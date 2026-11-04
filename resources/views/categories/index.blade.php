@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Daftar Kategori')
@@ -15,6 +16,7 @@
                 <th>ID</th>
                 <th>Nama Kategori</th>
                 <th>Deskripsi</th>
+                <th>Aksi</th>
             </tr>
         </thead>
 
@@ -24,10 +26,26 @@
                     <td>{{ $category['id'] }}</td>
                     <td>{{ $category['nama_kategori'] }}</td>
                     <td>{{ $category['deskripsi'] }}</td>
+                    <td>
+                        <a href="{{ route('categories.edit', $category['id']) }}">
+                            Edit
+                        </a>
+
+                        <form action="{{ route('categories.destroy', $category['id']) }}"
+                              method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                onclick="return confirm('Yakin ingin menghapus kategori ini?')">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">Belum ada data kategori.</td>
+                    <td colspan="4">Belum ada data kategori.</td>
                 </tr>
             @endforelse
         </tbody>

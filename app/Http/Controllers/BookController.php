@@ -3,7 +3,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
-// use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Http\Request;
 class BookController extends Controller
 {
     public function index()
@@ -53,10 +54,17 @@ class BookController extends Controller
             ->with('success', "Buku \"{$validated['judul']}\" berhasil diperbarui.");
     }
     public function destroy(string $id)
-    {
-        $book = Book::findOrFail($id);
-        $book->delete();
+{
+    $book = Book::findOrFail($id);
+
+    if ($book->loanItems()->exists()) {
         return redirect()->route('books.index')
-            ->with('success', 'Buku berhasil dihapus.');
+            ->with('error', 'Buku tidak dapat dihapus karena masih digunakan dalam transaksi peminjaman.');
     }
+
+    $book->delete();
+
+    return redirect()->route('books.index')
+        ->with('success', 'Buku berhasil dihapus.');
+}
 }

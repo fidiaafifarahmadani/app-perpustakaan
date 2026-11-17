@@ -135,24 +135,52 @@ public function update(Request $request, string $id)
         ])
     );
 }
-    // Memproses pengembalian buku
-    public function kembalikan(string $id)
-    {
-        $loan = Loan::with([
-            'member',
-            'user',
-            'loanItems.book'
-        ])->findOrFail($id);
+// Menampilkan total seluruh denda
+public function totalDenda()
+{
+    $totalDenda = Loan::where('status', 'dikembalikan')
+        ->sum('denda');
 
-        $loan->update([
-            'status' => 'dikembalikan',
-            'tanggal_dikembalikan' => now()->toDateString(),
-        ]);
-
-        return new LoanResource($loan->fresh()->load([
-            'member',
-            'user',
-            'loanItems.book'
-        ]));
-    }
+    return response()->json([
+        'total_denda' => $totalDenda,
+    ]);
 }
+
+    public function kembalikan(string $id)
+{
+    $loan = Loan::with([
+        'member',
+        'user',
+        'loanItems.book'
+    ])->findOrFail($id);
+
+    if ($loan->status === 'dikembalikan') {
+        return response()->json([
+            'message' => 'Buku sudah dikembalikan.'
+        ], 422);
+    }
+
+    $tanggalKembali = \Carbon\Carbon::parse($loan->tanggal_kembali);
+    $tanggalDikembalikan = now()->startOfDay();
+
+    $hariTerlambat = max(
+        0,
+        (int) $tanggalKembali->startOfDay()
+            ->diffInDays($tanggalDikembalikan, false)
+    );
+
+    $denda = $hariTerlambat * 1000;
+
+    $loan->update([
+        'status' => 'dikembalikan',
+        'tanggal_dikembalikan' => $tanggalDikembalikan->toDateString(),
+        'denda' => $denda,
+    ]);
+
+    return new LoanResource($loan->fresh()->load([
+        'member',
+        'user',
+        'loanItems.book'
+    ]));
+}
+    }

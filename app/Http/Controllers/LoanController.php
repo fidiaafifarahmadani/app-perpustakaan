@@ -52,6 +52,53 @@ class LoanController extends Controller
             'meta' => $body['meta'] ?? null,
         ]);
     }
+    // Menampilkan riwayat peminjaman
+public function riwayat(Request $request)
+{
+    try {
+        $response = Http::get(
+            config('services.internal_api.base_url') . '/api/loans',
+            [
+                'page' => $request->query('page', 1),
+            ]
+        );
+
+        if ($response->successful()) {
+            $data = $response->json();
+
+            $loans = collect($data['data'] ?? [])
+                ->where('status', 'dikembalikan')
+                ->values()
+                ->all();
+
+            return view('loans.riwayat', compact('loans'));
+        }
+
+        return back()->with('error', 'Gagal mengambil riwayat peminjaman.');
+
+    } catch (ConnectionException $e) {
+        return back()->with('error', 'Server API tidak dapat dihubungi.');
+    }
+}
+// Mengambil total denda dari API
+public function totalDenda()
+{
+    $totalDenda = 0;
+
+    try {
+        $response = Http::get(
+            config('services.internal_api.base_url') . '/api/loans/total-denda'
+        );
+
+        if ($response->successful()) {
+            $totalDenda = $response->json('total_denda') ?? 0;
+        }
+    } catch (ConnectionException $e) {
+        // Server API tidak dapat dihubungi.
+    }
+
+    return view('loans.total-denda', compact('totalDenda'));
+}
    public function report(Request $request)
 {
     try {

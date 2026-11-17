@@ -10,10 +10,12 @@ class DashboardController extends Controller
     public function index()
     {
         $stats = [
-            'total_buku' => 0,
-            'total_anggota' => 0,
-            'peminjaman_aktif' => 0,
-        ];
+    'total_buku' => 0,
+    'total_anggota' => 0,
+    'peminjaman_aktif' => 0,
+    'peminjaman_dikembalikan' => 0,
+    'total_denda' => 0,
+];
 
         try {
             $response = Http::get(

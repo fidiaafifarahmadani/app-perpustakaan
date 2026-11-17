@@ -10,14 +10,25 @@ use App\Models\Member;
 class StatsController extends Controller
 {
     public function index()
-    {
-        return response()->json([
-            'total_buku' => Book::count(),
-            'total_anggota' => Member::count(),
-            'peminjaman_aktif' => Loan::where(
-                'status',
-                'dipinjam'
-            )->count(),
-        ]);
-    }
+{
+    return response()->json([
+        'total_buku' => Book::count(),
+        'total_anggota' => Member::count(),
+
+        'peminjaman_aktif' => Loan::where(
+            'status',
+            'dipinjam'
+        )->count(),
+
+        'peminjaman_dikembalikan' => Loan::where(
+            'status',
+            'dikembalikan'
+        )->count(),
+
+        'total_denda' => Loan::where(
+            'status',
+            'dikembalikan'
+        )->sum('denda'),
+    ]);
+}
 }

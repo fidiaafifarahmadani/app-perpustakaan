@@ -14,13 +14,11 @@
     <table>
         <tr>
             <th>Anggota</th>
-            <td>{{ $loan['member']['nama'] ?? '-' }}
-                ({{ $loan['member']['nim'] ?? '-' }})
-            </td>
+            <td>{{ $loan['member']['nama'] ?? '-' }}</td>
         </tr>
         <tr>
             <th>Petugas</th>
-            <td>{{ $loan['user']['name'] ?? '-' }}</td>
+            <td>{{ $loan['petugas']['name'] ?? '-' }}</td>
         </tr>
         <tr>
             <th>Tanggal Pinjam</th>
@@ -38,6 +36,12 @@
             <th>Status</th>
             <td>{{ ucfirst($loan['status'] ?? '-') }}</td>
         </tr>
+        <tr>
+            <th>Denda</th>
+            <td>
+                Rp {{ number_format($loan['denda'] ?? 0, 0, ',', '.') }}
+            </td>
+        </tr>
     </table>
 
     <h2>Buku yang Dipinjam</h2>
@@ -45,15 +49,15 @@
     <table>
         <thead>
             <tr>
-                <th>Judul</th>
-                <th>Penulis</th>
+                <th>No.</th>
+                <th>Judul Buku</th>
             </tr>
         </thead>
         <tbody>
-            @forelse (($loan['loanItems'] ?? []) as $item)
+            @forelse (($loan['books'] ?? []) as $index => $book)
                 <tr>
-                    <td>{{ $item['book']['judul'] ?? '-' }}</td>
-                    <td>{{ $item['book']['penulis'] ?? '-' }}</td>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $book['judul'] ?? '-' }}</td>
                 </tr>
             @empty
                 <tr>

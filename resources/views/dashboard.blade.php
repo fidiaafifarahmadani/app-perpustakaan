@@ -25,6 +25,17 @@
             <div class="label">Peminjaman Aktif</div>
         </div>
     </div>
+    <div class="stat-card">
+            <div class="value">{{ $stats['peminjaman_dikembalikan'] }}</div>
+            <div class="label">Peminjaman Dikembalikan</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value">
+                Rp {{ number_format($stats['total_denda'], 0, ',', '.') }}
+            </div>
+            <div class="label">Total Denda</div>
+        </div>
 
     <p style="margin-top: 24px;">
         <a href="{{ route('loans.report') }}" class="btn">

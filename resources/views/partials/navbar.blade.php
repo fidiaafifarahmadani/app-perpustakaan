@@ -39,7 +39,18 @@
                     Peminjaman
                 </a>
             </li>
-
+            <li>
+    <a href="{{ route('loans.riwayat') }}"
+        class="{{ request()->routeIs('loans.riwayat') ? 'active' : '' }}">
+        Riwayat
+    </a>
+</li>
+<li>
+    <a href="{{ route('loans.total-denda') }}"
+        class="{{ request()->routeIs('loans.total-denda') ? 'active' : '' }}">
+        Total Denda
+    </a>
+</li>
             <li>
                 <a href="{{ route('loans.report') }}"
                     class="{{ request()->routeIs('loans.report') ? 'active' : '' }}">

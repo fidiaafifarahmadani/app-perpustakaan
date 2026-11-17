@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@pens.ac.id'],
             [
-                'name' => 'Bambang Sutrisno',
+                'name' => 'Fidia AFifa Rahmadani',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
             ]

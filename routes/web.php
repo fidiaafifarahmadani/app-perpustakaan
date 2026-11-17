@@ -23,7 +23,8 @@ Route::get('/', [DashboardController::class, 'index'])
 
 // Protected
 Route::middleware(['auth'])->group(function () {
-
+    Route::get('/loans/total-denda', [LoanController::class, 'totalDenda'])
+    ->name('loans.total-denda');
     Route::middleware(['admin'])->group(function () {
         Route::resource('categories', CategoryController::class)
             ->except(['show']);
@@ -31,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('books', BookController::class);
     Route::resource('members', MemberController::class);
+
+    Route::get('/loans/riwayat', [LoanController::class, 'riwayat'])
+    ->name('loans.riwayat');
 
     Route::get('/loans/report', [LoanController::class, 'report'])
         ->name('loans.report');
